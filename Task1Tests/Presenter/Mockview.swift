@@ -8,11 +8,16 @@
 import Foundation
 @testable import Task1
 class MockView: viewDelegate{
-    var presenter: Task1.presenterDelegate?
-    
-    func showPassWordWarning() {
+    func signupViewWarning(message: String) {
         
     }
+    
+    func showWarning(message: String) {
+        
+    }
+    
+    var presenter: Task1.presenterDelegate?
+    
     
     func showLoadingpage(user: Task1.User) {
         

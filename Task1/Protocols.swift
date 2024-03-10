@@ -10,12 +10,16 @@ import UIKit
 
 protocol viewDelegate{
     var presenter: presenterDelegate? {get set}
-    func showPassWordWarning()
+    func signupViewWarning(message: String)
     func showLoadingpage(user: User)
+    func showWarning(message: String)
+    
 }
+
 protocol DashBoardDelegate{
     var presenter:presenterDelegate? {get set}
     func ShowListing()
+    func setUserInstance(user: User)
 }
 //protocol signUpviewDelegate{
 //    var presenter: presenterDelegate? {get set}
@@ -31,7 +35,7 @@ protocol presenterDelegate{
     
     func checkCredentials(username: String?,password: String?)
     func newUser(username: String?, password: String?, age: Int?, country: String?, gender: String?)
-    func weakPassword()
+    func signupViewWarning(message: String)
     func showLoadingPage(user: User)
     
     
@@ -40,7 +44,10 @@ protocol presenterDelegate{
     func didFetchData(result: Result<[Names],Error>)
     func fetchData()
     
+    func showWarning(message: String)
+    
 }
+
 protocol interactorDelegate{
     var presenter: presenterDelegate? {get set}
     

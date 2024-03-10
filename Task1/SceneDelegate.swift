@@ -18,10 +18,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        if let user = UserDefaults.standard.data(forKey: "LastUser")
+        if let user = UserDefaults.standard.data(forKey: "LastUser"),let decodedInstance = try? JSONDecoder().decode(User.self, from: user) , decodedInstance.state == .logedIN
         {
-            print("from scene delegate the last user YES")
-            window?.rootViewController = UINavigationController(rootViewController: Router.startWithDash())
+            
+                print("from scene delegate the last user YES")
+                window?.rootViewController = UINavigationController(rootViewController: Router.startWithDash())
+            
+            
+            
         }
         else{
             print("from scene delegate the last user NO")

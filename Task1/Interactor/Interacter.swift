@@ -12,11 +12,11 @@ class Interacter: interactorDelegate {
     
     
     
-    
+    var url = URL(string: "https://fake-json-api.mock.beeceptor.com/users")
     var presenter: presenterDelegate?
     
     func verifyCredential(username: String?, password: String?) {
-        if let username = username{ //OP?
+        if let username = username , username != "" { //OP?
             if let user = UserDefaults.standard.data(forKey: username){
                 do{
                     let decodedInstance = try JSONDecoder().decode(User.self, from: user)
@@ -24,31 +24,37 @@ class Interacter: interactorDelegate {
                         print("logged In")
                         presenter?.showLoadingPage(user: decodedInstance)
                     }else{
-                        print("wrong answer")
+//                        print("wrong answer")
+                        presenter?.showWarning(message: "Password is incorrect")
                     }
                 }catch{
-                    print("can't decode")
+//                    print("can't decode")
+                    presenter?.showWarning(message: "An error occured while decoding")
                 }
             }
             else{
                 print("Username doesnt exist")
+                presenter?.showWarning(message: "Username doesnt exist try to sign up")
             }
         }
         else{
-            print("username cant be nil")
+//            print("username cant be nil")
+            presenter?.showWarning(message: "Username cant be nil")
         }
     }
     
     func creatUser(username: String?, password: String?, age: Int?, country: String?, gender: String?) {
-        guard let username = username else
+        guard let username = username,username != "" else
         {
-            print("user is empty")
+            presenter?.signupViewWarning(message: "user name cant be empty")
             return
         }
-        
+        if(CheckRedundancy(username: username)){
+            presenter?.signupViewWarning(message: "user already exist try to login")
+            return
+        }
         guard let password = password , validatePassword(password: password) else {
-            print("password must contains atleast 6 letter, a speacial character, a capital letter")
-            presenter?.weakPassword()
+            presenter?.signupViewWarning(message: "password must contains atleast 6 letter, a speacial character, a capital letter")
 //            let alert = UIAlertController(title: "Aleart", message: "This is an alert.", preferredStyle: .alert)
 //            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil)
 
@@ -58,7 +64,7 @@ class Interacter: interactorDelegate {
         
         
         
-        if let age = age, let country = country, let gender = gender, !CheckRedundancy(username: username){
+        if let age = age, let country = country, let gender = gender {
             
             let user = User(username: username, country: country, age: age, gender: gender, password: password)
             do{
@@ -67,10 +73,10 @@ class Interacter: interactorDelegate {
                 print("create new account succesfully")
                 presenter?.showLoadingPage(user: user)
             }catch{
-                print("error occured while creting user")
+                presenter?.signupViewWarning(message: "error occured while creting user")
             }
         }else{
-            print("either field is empty or already user exits")
+            presenter?.signupViewWarning(message: "all field are mandotory")
         }
     }
     func CheckRedundancy(username: String) -> Bool
@@ -87,19 +93,15 @@ class Interacter: interactorDelegate {
 }
 extension Interacter{
     func addDocList(user: User, text: String) {
-        print("form inter the text it got is :k \(text)")
+        
         user.listing.append(text)
-        print("the user name we got is \(user.username)")
-        print("then user list is : \(user.listing)")
+
         if let username = user.username{
             do{
                 let encodedData = try JSONEncoder().encode(user)
                 UserDefaults.standard.set(encodedData,forKey: username)
-                print("added doclist succes fully")
-                print(user.listing)
-                
             }catch{
-                print("erro in adding doclist")
+                return
             }
         }
         
@@ -108,21 +110,19 @@ extension Interacter{
 extension Interacter
 {
     func fetchData() {
-        guard let url = URL(string: "https://fake-json-api.mock.beeceptor.com/users") else {return}
+        guard let url = self.url else{return}
         let task = URLSession.shared.dataTask(with: url){
             [weak self] data , _ ,error in
             guard let data = data, error == nil else {
-                self?.presenter?.didFetchData(result: .failure("not found" as! Error))
+                self?.presenter?.didFetchData(result: .failure(error as! Error))
                 return
             }
-            
-        
             do{
                 let data = try JSONDecoder().decode([Names].self,from: data)
                 print(data)
                 self?.presenter?.didFetchData(result: .success(data))
             }catch{
-                self?.presenter?.didFetchData(result: .failure("not found " as! Error))
+                self?.presenter?.didFetchData(result: .failure(error))
             }
         }
         task.resume()

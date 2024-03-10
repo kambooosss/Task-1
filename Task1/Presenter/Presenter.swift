@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 class Presenter: presenterDelegate{
+    
+    
     var newVc: newVcDelegate?
     
    
@@ -45,8 +47,8 @@ class Presenter: presenterDelegate{
     }
     
     
-    func weakPassword() {
-        view?.showPassWordWarning()
+    func signupViewWarning(message: String) {
+        view?.signupViewWarning(message: message)
     }
     
     func showLoadingPage(user: User) {
@@ -66,5 +68,12 @@ extension Presenter{
     
     func fetchData() {
         interactor?.fetchData()
+    }
+}
+extension Presenter{
+    func showWarning(message: String) {
+        print(view)
+        view?.showWarning(message: message)
+        print("show warning rading from presenter")
     }
 }

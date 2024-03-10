@@ -117,6 +117,7 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(Logout), for: .touchUpInside)
         button.backgroundColor = .gray
+        button.accessibilityIdentifier = "logout"
         button.sizeToFit()
         return button
     }()
@@ -311,6 +312,7 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.backgroundColor = .gray
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.circle"), style: .plain, target: self, action: #selector(selectedProfile))
+        self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = "profile"
     }
     
     //MARK: VIEW WILL APEAR
@@ -570,6 +572,8 @@ extension DashBoardVC: UICollectionViewDelegate,
                 let new = NewVC()
                 new.presenter = self.presenter //for the flow
                 new.presenter?.newVc = new
+//                new.presenter?.interactor = self.presenter?.interactor
+//                new.presenter?.interactor?.presenter = self.presenter
                 let title = self.user.listing[indexPath.row]
                 new.configNav(title: title)
                 self.present(new, animated: true, completion: nil)

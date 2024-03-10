@@ -9,6 +9,10 @@ import Foundation
 import UIKit
 
 class SignupVC: UIViewController,viewDelegate {
+    func showWarning(message: String) {
+        
+    }
+    
     
     
     var presenter: presenterDelegate?
@@ -75,6 +79,7 @@ class SignupVC: UIViewController,viewDelegate {
         button.titleLabel?.font = .systemFont(ofSize: 25)
         button.setTitleColor(.black, for: .highlighted)
         button.layer.cornerRadius = 10
+        button.accessibilityIdentifier = "signupPageSignupButton"
         button.addTarget(self, action: #selector(tapedSingUP), for: .touchUpInside)
         return button
     }()
@@ -206,11 +211,11 @@ class SignupVC: UIViewController,viewDelegate {
             ])
     }
 //MARK: SHOW PASSWORD WARNING
-    func showPassWordWarning() {
-        let alert = UIAlertController(title: "Alert", message: "password must contains atleast 6 letter, a speacial character, a capital letter", preferredStyle: .alert)
+    func signupViewWarning(message: String) {
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "OK", style: .default))
-
+        alert.view.accessibilityIdentifier = "signupAlert"
         self.present(alert, animated: true, completion: nil)
     }
 }

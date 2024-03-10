@@ -9,6 +9,10 @@ import Foundation
 @testable import Task1
 
 class MockInteracter: interactorDelegate{
+    func fetchData() {
+        
+    }
+    
     var presenter: Task1.presenterDelegate?
     
     var addDocListCalled = false

@@ -82,7 +82,7 @@ class NewVC: UIViewController , newVcDelegate {
         
         tableView.dataSource = self
         
-        presenter?.fetchData()
+        
         
 //            configNav(title: "alsdkfj")
             
@@ -117,6 +117,7 @@ class NewVC: UIViewController , newVcDelegate {
         } else {
             print("Error: No data found for key")
         }
+        presenter?.fetchData()
     }
     
     func configNav(title : String)

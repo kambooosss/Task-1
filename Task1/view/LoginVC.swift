@@ -17,7 +17,7 @@ class LoginVC: UIViewController, viewDelegate {
     
     var presenter: presenterDelegate?
     let signupview = SignupVC()
-    let dashboard = DashBoardVC()
+    var dashboard : (DashBoardDelegate & UIViewController)?
 
     
     var outerStack: UIStackView = {
@@ -27,7 +27,7 @@ class LoginVC: UIViewController, viewDelegate {
         view.axis = .vertical
         view.distribution = .fillEqually
         view.spacing = 25
-        
+        view.accessibilityIdentifier = "outerStack"
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -48,6 +48,7 @@ class LoginVC: UIViewController, viewDelegate {
         button.titleLabel?.font = .systemFont(ofSize: 25)
         button.setTitleColor(.black, for: .highlighted)
         button.layer.cornerRadius = 10
+        button.accessibilityIdentifier = "signin"
         button.addTarget(self, action: #selector(tapedSingIN), for: .touchUpInside)
         return button
     }()
@@ -56,6 +57,7 @@ class LoginVC: UIViewController, viewDelegate {
         let loading = UIActivityIndicatorView(style: .large)
         loading.backgroundColor = .gray
         loading.translatesAutoresizingMaskIntoConstraints = false
+        loading.accessibilityIdentifier = "loading"
         return loading
     }()
     
@@ -70,6 +72,7 @@ class LoginVC: UIViewController, viewDelegate {
         button.titleLabel?.font = .systemFont(ofSize: 25)
         button.setTitleColor(.black, for: .highlighted)
         button.layer.cornerRadius = 10
+        button.accessibilityIdentifier = "signup"
         button.addTarget(self, action: #selector(tapedSingUP), for: .touchUpInside)
         return button
     }()
@@ -81,6 +84,7 @@ class LoginVC: UIViewController, viewDelegate {
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.spacing = 10
+        stackView.accessibilityIdentifier = "stackView"
         return stackView
     }()
     
@@ -120,23 +124,23 @@ class LoginVC: UIViewController, viewDelegate {
         
         
 //      MARK: NEW STATE RESTORATION
-        if let user = UserDefaults.standard.data(forKey: "LastUser"){
-            print("from login vc the last user is \(UserDefaults.standard.string(forKey: "LastUser"))")
-            do{
-                let decodedInstance = try JSONDecoder().decode(User.self, from: user)
-                print("from lgin vc user state is : \(decodedInstance.state)")
-                if(decodedInstance.state == .logedIN)
-                {
-                    showLoadingpage(user: decodedInstance)
-                }
-               
-            }catch{
-                print("can't decode state")
-            }
-        }
-        else{
-            print("Username doesnt exist")
-        }
+//        if let user = UserDefaults.standard.data(forKey: "LastUser"){
+//            print("from login vc the last user is \(UserDefaults.standard.string(forKey: "LastUser"))")
+//            do{
+//                let decodedInstance = try JSONDecoder().decode(User.self, from: user)
+//                print("from lgin vc user state is : \(decodedInstance.state)")
+//                if(decodedInstance.state == .logedIN)
+//                {
+//                    showLoadingpage(user: decodedInstance)
+//                }
+//               
+//            }catch{
+//                print("can't decode state")
+//            }
+//        }
+//        else{
+//            print("Username doesnt exist")
+//        }
         
         
         
@@ -163,10 +167,12 @@ class LoginVC: UIViewController, viewDelegate {
     
     func configureTextField(){
         userName.placeholder = "userName"
+        userName.accessibilityIdentifier = "userName"
         age.placeholder = "Age"
         gender.placeholder = "Gender"
         country.placeholder = "Country"
         password.placeholder = "Password"
+        password.accessibilityIdentifier = "password"
         password.isSecureTextEntry = true
 //        password.inputView = pickerView
         
@@ -194,8 +200,8 @@ class LoginVC: UIViewController, viewDelegate {
             
             ])
     }
-    func showPassWordWarning() {
-        signupview.showPassWordWarning()
+    func signupViewWarning(message: String) {
+        signupview.signupViewWarning(message: message)
     }
     func showLoadingpage(user: User) {
         
@@ -226,8 +232,13 @@ class LoginVC: UIViewController, viewDelegate {
                         
                         self.loading.stopAnimating()
                         self.loading.removeFromSuperview()
-                        self.navigationController?.pushViewController(self.dashboard, animated: true)
-                        self.dashboard.setUserInstance(user: user)
+                        self.dashboard = Router.startWithDash()
+                        if let dashboard = self.dashboard {
+                            self.navigationController?.pushViewController(dashboard, animated: true)
+                            dashboard.setUserInstance(user: user)
+                        }
+                       
+                        
                         
                     }
                     
@@ -240,7 +251,15 @@ class LoginVC: UIViewController, viewDelegate {
         }
         
     }
-    
+    func showWarning(message: String) {
+        print("from login vc show waring")
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.view.accessibilityIdentifier = "Alert"
+        self.present(alert, animated: true, completion: nil)
+        
+        
+    }
     
 }
-
