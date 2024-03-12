@@ -1,9 +1,3 @@
-//
-//  Signup.swift
-//  Task1
-//
-//  Created by kamalesh-pt7513 on 22/02/24.
-//
 
 import Foundation
 import UIKit
@@ -13,16 +7,11 @@ class SignupVC: UIViewController,viewDelegate {
         
     }
     
-    
-    
     var presenter: presenterDelegate?
     let countryDropDown = UIPickerView()
     let genderDropDown = UIPickerView()
     let dashboard = DashBoardVC()
-    
-    
-//    let nav = navigationController.root
-    //MARK: GENDER COUNTRY
+
     let genders = ["Male","Female","Other"]
     let countries = [
         "United States",
@@ -52,6 +41,7 @@ class SignupVC: UIViewController,viewDelegate {
         let loading = UIActivityIndicatorView(style: .large)
         loading.backgroundColor = .gray
         loading.translatesAutoresizingMaskIntoConstraints = false
+        loading.accessibilityIdentifier = "loadingfromSignup"
         return loading
     }()
     var outerStack: UIStackView = {
@@ -59,7 +49,6 @@ class SignupVC: UIViewController,viewDelegate {
         view.axis = .vertical
         view.distribution = .fillEqually
         view.spacing = 25
-        
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -76,11 +65,13 @@ class SignupVC: UIViewController,viewDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("SignUP", for: .normal)
         button.backgroundColor = .systemCyan
+        button.setTitleColor(.gray, for: .disabled)
         button.titleLabel?.font = .systemFont(ofSize: 25)
         button.setTitleColor(.black, for: .highlighted)
         button.layer.cornerRadius = 10
         button.accessibilityIdentifier = "signupPageSignupButton"
         button.addTarget(self, action: #selector(tapedSingUP), for: .touchUpInside)
+        button.isEnabled = false
         return button
     }()
     
@@ -96,14 +87,10 @@ class SignupVC: UIViewController,viewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureTextField()
         setupView()
-        
-//        print("from viewdidload of sigupVC wher presenter is: \(self.presenter)")
-        
     }
-    // MARK: VIEW WILL APEAR
+    
     override func viewWillAppear(_ animated: Bool) {
         print("view will appear from signup view")
         navigationController?.navigationBar.isHidden = false
@@ -116,23 +103,22 @@ class SignupVC: UIViewController,viewDelegate {
     
     @objc func tapedSingUP()
     {
-//        print("enter taped signup")
-//        print(userName.text ?? "")
-//        print("presenter is :\(presenter)")
         
-            presenter?.newUser(username: userName.text, password: password.text, age: Int(age.text ?? "0"), country: country.text, gender: gender.text)
+        presenter?.newUser(username: userName.text, password: password.text, age: Int(age.text ?? "0"), country: country.text, gender: gender.text)
         
+    }
+    @objc func textFieldDidChanged(_ sender: CustomTextField)
+    {
+        let name: Bool = userName.text?.count ?? 0 > 0
+        let password: Bool = password.text?.count ?? 0 > 0
+        let age: Bool = age.text?.count ?? 0 > 0
+        let gender: Bool = gender.text?.count ?? 0 > 0
+        let country: Bool = country.text?.count ?? 0 > 0
         
-        
-        
-        
-        
-//        loading.removeFromSuperview()
-        
+        signUp.isEnabled = (name && password && age && gender && country)
         
         
     }
-//MARK: SHOW LAODING PAGE
     func showLoadingpage(user: User)
     {
         user.state = .logedIN
@@ -175,23 +161,44 @@ class SignupVC: UIViewController,viewDelegate {
     }
     func configureTextField(){
         userName.placeholder = "userName"
+        userName.accessibilityIdentifier = "usernameFromSignup"
+        userName.addTarget(self, action: #selector( textFieldDidChanged(_:)),for: .editingChanged)
+        
         age.placeholder = "Age"
+        age.accessibilityIdentifier = "age"
+        age.addTarget(self, action: #selector( textFieldDidChanged(_:)),for: .editingChanged)
+        
         gender.placeholder = "Gender"
-        country.placeholder = "Country"
-        password.placeholder = "Password"
-        password.isSecureTextEntry = true
-        country.inputView = countryDropDown
+        gender.accessibilityIdentifier = "gender"
         gender.inputView = genderDropDown
+        gender.addTarget(self, action: #selector( textFieldDidChanged(_:)),for: .allEditingEvents)
+        
+        country.placeholder = "Country"
+        country.accessibilityIdentifier = "country"
+        country.inputView = countryDropDown
+        country.addTarget(self, action: #selector( textFieldDidChanged(_:)),for: .allEditingEvents)
+        
+        password.placeholder = "Password"
+        password.accessibilityIdentifier = "passwordFromSignup"
+        password.isSecureTextEntry = true
+        password.textContentType = .oneTimeCode
+        password.addTarget(self, action: #selector( textFieldDidChanged(_:)),for: .editingChanged)
+        
+        
         countryDropDown.dataSource = self
         countryDropDown.delegate = self
+        countryDropDown.accessibilityIdentifier = "countryDropDown"
+        
         genderDropDown.delegate = self
         genderDropDown.dataSource = self
+        genderDropDown.accessibilityIdentifier = "genderDropDown"
+        
     }
     func setupView()
     {
         view.backgroundColor = .black
         view.addSubview(outerStack)
-//        view.addSubview(loading)
+
         
         outerStack.addArrangedSubview(userName)
         outerStack.addArrangedSubview(password)
@@ -210,7 +217,7 @@ class SignupVC: UIViewController,viewDelegate {
             
             ])
     }
-//MARK: SHOW PASSWORD WARNING
+
     func signupViewWarning(message: String) {
         let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
         
@@ -219,7 +226,7 @@ class SignupVC: UIViewController,viewDelegate {
         self.present(alert, animated: true, completion: nil)
     }
 }
-//MARK: PICKERVIEW 
+
 extension SignupVC: UIPickerViewDelegate,UIPickerViewDataSource{
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

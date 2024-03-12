@@ -1,48 +1,37 @@
-//
-//  DashBoard.swift
-//  Task1
-//
-//  Created by kamalesh-pt7513 on 22/02/24.
-//
 
 import Foundation
 import UIKit
 
 class DashBoardVC: UIViewController,DashBoardDelegate {
     
+    lazy var user = User()
+    lazy var details : [String] = []
     var presenter: presenterDelegate?
+    var vcName: UIAlertController?
     
-    //MARK: COLLECTION VIEW SETUP
     let layout : UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 10
-        
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        
         return layout
     }()
     
-    var collectionView: UICollectionView = {
+    var DoclistingCV: UICollectionView = {
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemGray3
         collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell" )
-        
+        collectionView.accessibilityIdentifier = "doclistingCV"
         return collectionView
     }()
     
-
-    
-
-
-    lazy var user = User()
-    lazy var details : [String] = []
-    //MARK: TABLE VIEW DOC LISTING
     let docListingTV : UITableView = {
         let tableView = UITableView()
         tableView.estimatedRowHeight = 44
@@ -50,47 +39,34 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         tableView.backgroundColor = .systemGray3
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "doclist")
+        tableView.accessibilityIdentifier = "doclistingTV"
         return tableView
     }()
-    //MARK: NEW BUTTON
+    
     let newButton: UIButton = {
         let button = UIButton()
-//        button.setTitle("New", for: .normal)
         button.setTitleColor(.black, for: .normal)
-//        button.titleLabel?.font = UIFont.systemFont(ofSize:35)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 40
         button.setImage(UIImage(systemName: "plus.circle"), for: .normal)
-//        button.imageView?.contentMode = .scaleAspectFill
         button.layer.borderWidth = 6
         button.layer.borderColor = UIColor.white.cgColor
-        
         button.addTarget(self, action: #selector(newTapped), for: .touchUpInside)
-        
         button.backgroundColor = .systemGray3
-//        button.sizeToFit()
-//        button.clipsToBounds = true
-        
+        button.accessibilityIdentifier = "NewButton"
         return button
     }()
     let changeViewButton: UIButton = {
         let button = UIButton()
-//        button.setTitle("New", for: .normal)
         button.setTitleColor(.black, for: .normal)
-//        button.titleLabel?.font = UIFont.systemFont(ofSize:35)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 40
         button.setImage(UIImage(systemName: "list.bullet"), for: .normal)
-//        button.imageView?.contentMode = .scaleAspectFill
         button.layer.borderWidth = 6
         button.layer.borderColor = UIColor.white.cgColor
-        
         button.addTarget(self, action: #selector(changeViewTapped), for: .touchUpInside)
-        
         button.backgroundColor = .systemGray3
-//        button.sizeToFit()
-//        button.clipsToBounds = true
-        
+        button.accessibilityIdentifier = "changeViewButton"
         return button
     }()
     
@@ -99,18 +75,10 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         buttonView.translatesAutoresizingMaskIntoConstraints = false
         buttonView.distribution = .fillEqually
         buttonView.spacing = 50
-        
         buttonView.backgroundColor = .systemGray3
-        
-        
-//        buttonView.autoresizesSubviews = true
         return buttonView
-        
     }()
     
-    
-    
-    //MARK: LOGOUT BUTTON
     lazy var logOutButton: UIButton = {
         let button = UIButton()
         button.setTitle("LogOut", for: .normal)
@@ -121,7 +89,7 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         button.sizeToFit()
         return button
     }()
-    //MARK: PROFILE
+    
     lazy var profile : UIView = {
         let profile = UIView()
         profile.backgroundColor = .gray
@@ -129,8 +97,8 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         profile.isHidden = true
         return profile
     }()
-    //MARK: TABLE VIEW
-    lazy var tableView: UITableView = {
+    
+    lazy var profileTV: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .white
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -139,16 +107,12 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         tableView.clipsToBounds = true
         tableView.estimatedRowHeight = 30
         tableView.tableFooterView = logOutButton
+        tableView.accessibilityIdentifier = "profileTV"
         return tableView
     }()
-    //MARK: VIDE DID LOAD
+    
     override func viewDidLoad() {
-//        var navbar : UINavigationBar = {
-//            let navbar = UINavigationBar()
-//            navbar.backgroundColor = .blue
-//            return navbar
-//        }()
-        
+
         super.viewDidLoad()
         
         title = "Login App"
@@ -159,15 +123,17 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         
         configureCollectionView()
         
-        tableView.delegate = self
-        tableView.dataSource = self
+        profileTV.delegate = self
+        profileTV.dataSource = self
         
         docListingTV.delegate = self
         docListingTV.dataSource = self
         
-        collectionView.dataSource = self
-        collectionView.delegate  = self
+        DoclistingCV.dataSource = self
+        DoclistingCV.delegate  = self
         
+        /*if dash is the first viewcontroller in nvigation stack set user instance else
+        setting up user instance will be taken care by loginvc*/
         if (navigationController?.viewControllers.first is DashBoardVC)
         {
             if let user = UserDefaults.standard.data(forKey: "LastUser"){
@@ -181,66 +147,33 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
             
         }
         
-        
-        
-        
-        
-        
     }
-    //MARK: CONFIGURE COLLECTION VIEW
     
     func configureCollectionView()
     {
-        
-//        let itemWidth = (view.safeAreaLayoutGuide.layoutFrame.width - layout.sectionInset.left - layout.sectionInset.right - layout.minimumInteritemSpacing * 2) / 3
-//        layout.itemSize = CGSize(width: itemWidth, height: itemWidth / 2)
-        
-        
-        
-//        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        collectionView.backgroundColor = .systemGray3
-//        collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        // Register your custom UICollectionViewCell subclass
-//        collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
-        
-        // Set the dataSource to self
-        
-        // Add the collection view to the view hierarchy
-        view.addSubview(collectionView)
+        view.addSubview(DoclistingCV)
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: buttonView.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            DoclistingCV.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            DoclistingCV.bottomAnchor.constraint(equalTo: buttonView.topAnchor),
+            DoclistingCV.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            DoclistingCV.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
-        
-        
-        
-        
-        
-    }    //MARK: VIEW DID APPER
+    
+    }    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        self.present(aaa(), animated: true)
     }
     
-    //MARK: SET USER INTANCE
     func setUserInstance(user: User)
     {
         self.user = user
         details = extractDetails(user: user)
     }
-    //MARK: EXTRACT DETAILS
+    
     func extractDetails(user: User) -> [String]
     {
-//        let name = "Name: \(user.username)"
-//        let age = "Age: \(user.age)"
-//        let country = "Country: \(user.country)"
-//        let gender = "Gender: \(user.gender)"
-        
+
         var name = ""
         if let username = user.username {
             name = "Name: \(username)"
@@ -261,53 +194,27 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
             gender = "Gender: \(userGender)"
         }
 
-        
         return [name,age,country,gender]
     }
-    //MARK: LOGOUT
+    
     @objc func Logout()
     {
-//        UserDefaults.standard.set("yes", forKey: "didLogOUT")
         self.user.state = .logedOUT
-        print("from dashbaord : uer stteee is \(user.state)")
         
-        //MARK: CHANGES AFTER WORKING
-//        Task{
-//            do{
-//                let encodedData = try JSONEncoder().encode(user)
-//                UserDefaults.standard.set(encodedData,forKey: "LastUser")
-////                UserDefaults.standard.synchronize()
-//                
-//            }catch{
-//                print("cant save LastUser")
-//            }
-//        }
-        
-        //MARK: CHANGES AFTER WORKING
         UserDefaults.standard.set(nil,forKey: "LastUser")
         
-        
-        print("from dash board logout funtion the lastuser is \(UserDefaults.standard.string(forKey: "LastUser"))")
-//        UserDefaults.standard.synchronize()
         navigationController?.popToRootViewController(animated: true)
+        
         if(navigationController?.topViewController is DashBoardVC)
         {
-            
             navigationController?.setViewControllers([Router.start()], animated: true)
         }
-        
-        
-        
     }
-   
     
-    //MARK: SETUP NAVIGATION
     func setupNavigation()
     {
         view.backgroundColor = .black
         navigationItem.hidesBackButton = true
-//        view.addSubview(navbar)
-//        navigationController?.navigationBar.barTintColor = .black
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.backgroundColor = .gray
@@ -315,29 +222,23 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = "profile"
     }
     
-    //MARK: VIEW WILL APEAR
+    
     override func viewWillAppear(_ animated: Bool) {
         Task{
             navigationController?.navigationBar.isHidden = false
             profile.isHidden = true
-            tableView.reloadData()
+            profileTV.reloadData()
             showPreference()
-            collectionView.reloadData()
+            DoclistingCV.reloadData()
             docListingTV.reloadData()
-//            UserDefaults.standard.set("no", forKey: "didLogOUT")
-//            user.state = .logedIN
-            
             print("from dahs barod user stqte: \(user.state)")
         }
         Task{
             do{
                 if(user.state == .logedIN)
                 {
-                    
-                    
                     let encodedData = try JSONEncoder().encode(user)
                     UserDefaults.standard.set(encodedData,forKey: "LastUser")
-                    //                UserDefaults.standard.synchronize()
                 }
                 
             }catch{
@@ -346,47 +247,43 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
         }
         
     }
-    //MARK: VIEW DID APEAR
+    
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
         Task{
             do{
                 let encodedData = try JSONEncoder().encode(user)
-                UserDefaults.standard.set(encodedData,forKey: "LastUser")
-//                UserDefaults.standard.synchronize()
-                
+//                UserDefaults.standard.set(encodedData,forKey: "LastUser")
+                UserDefaults.standard.set(encodedData,forKey: user.username!)
+
             }catch{
                 print("cant save LastUser")
             }
         }
-        
-        
     }
+    
     func showPreference()
     {
         if(user.doclist == .collectioin)
         {
             docListingTV.isHidden = true
-            collectionView.isHidden = false
+            DoclistingCV.isHidden = false
         }
         else{
-            collectionView.isHidden = true
+            DoclistingCV.isHidden = true
             docListingTV.isHidden = false
         }
     }
-    //MARK: SELECTED PROFILE
+    
     @objc func selectedProfile ()
     {
         configureProfile()
-//        navigationController?.pushViewController(NewVC(), animated: true)
-//        navigationController?.popToRootViewController(animated: true)
-        
+
     }
-    //MARK: CONFIGURE PROFILE
+    
     func configureProfile() {
         
         view.addSubview(profile)
-        profile.addSubview(tableView)
+        profile.addSubview(profileTV)
         
         NSLayoutConstraint.activate([
             profile.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -396,22 +293,22 @@ class DashBoardVC: UIViewController,DashBoardDelegate {
             
             
             
-            tableView.topAnchor.constraint(equalTo: profile.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: profile.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: profile.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: profile.trailingAnchor),
+            profileTV.topAnchor.constraint(equalTo: profile.topAnchor),
+            profileTV.bottomAnchor.constraint(equalTo: profile.bottomAnchor),
+            profileTV.leadingAnchor.constraint(equalTo: profile.leadingAnchor),
+            profileTV.trailingAnchor.constraint(equalTo: profile.trailingAnchor),
         ])
         
         profile.isHidden = !profile.isHidden
         
     }
-    //MARK: SHOW LISTING
+    
     func ShowListing() {
         print("showing list")
     }
     
 }
-//MARK: TABLE VIEW DELEGATE
+
 extension DashBoardVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(tableView == docListingTV)
@@ -422,7 +319,7 @@ extension DashBoardVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if(tableView == self.tableView)
+        if(tableView == self.profileTV)
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             cell.textLabel?.text = details[indexPath.row]
@@ -439,66 +336,68 @@ extension DashBoardVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(tableView == docListingTV)
         {
-//            let new = NewVC()
-//            let title = user.listing[indexPath.row]
-//            new.configNav(title: title)
-//            self.present(new, animated: true, completion: nil)
             showOpeningOptions(indexPath: indexPath)
         }
     }
-    
-    
 }
-//MARK: EXTENSION 2
+
 extension DashBoardVC{
+    @objc func aleartTextFieldDidChange(_ sender: UITextField)
+    {
+        vcName?.actions[0].isEnabled = sender.text?.count ?? 0 > 0
+    }
     
     
     @objc func newTapped() {
         print("tabped new from dashboard")
         
-        
-        
-        let vcName = UIAlertController(title: "NewVC", message: "enter titiel for new VC", preferredStyle: .alert)
-            vcName.addTextField(){
+        vcName = UIAlertController(title: "NewVC", message: "enter titiel for new VC", preferredStyle: .alert)
+        vcName?.view.accessibilityIdentifier = "vcNameAlert"
+            vcName?.addTextField(){
             textField in
-            textField.placeholder = "Enter VC name"
+                textField.placeholder = "Enter VC name"
+                textField.addTarget(self, action: #selector(self.aleartTextFieldDidChange(_:)), for: .editingChanged)
         }
+        
         
         let okAction = UIAlertAction(title: "OK", style: .default) {
               action in 
-              if let textField = vcName.textFields?.first,
-              let text = textField.text{
+            if let textField = self.vcName?.textFields?.first,
+                 let text = textField.text , !text.isEmpty{
                   
                   
                   self.presenter?.addDocList(user: self.user,text: text)
                   Task{
                       self.docListingTV.reloadData()
-                      self.collectionView.reloadData()
+                      self.DoclistingCV.reloadData()
                       self.showPreference()
                   }
                   Task{
                       do{
                           let encodedData = try JSONEncoder().encode(self.user)
                           UserDefaults.standard.set(encodedData,forKey: "LastUser")
-          //                UserDefaults.standard.synchronize()
-                          
+          
                       }catch{
                           print("cant save LastUser")
                       }
                   }
                   
               }else {
-                 print("No value has been entered in email address")
-                  
+                 print("No value has been entered")
                  return
               }
 
         }
+        
+        okAction.isEnabled = false
+        okAction.accessibilityIdentifier = "alertOkButton"
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-           // adding actions to alert
-           vcName.addAction(okAction)
-           vcName.addAction(cancelAction)
-        present(vcName, animated: true)
+           
+           vcName?.addAction(okAction)
+           vcName?.addAction(cancelAction)
+        present(vcName!, animated: true)
+        cancelAction.accessibilityIdentifier = "alertCancelButton"
         
         
         print(user.listing)
@@ -523,8 +422,6 @@ extension DashBoardVC{
             
             newButton.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
             newButton.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
-//            newButton.heightAnchor.constraint(equalToConstant: 100),
-//            newButton.widthAnchor.constraint(equalToConstant: 100)
             newButton.heightAnchor.constraint(equalTo: buttonView.heightAnchor, multiplier: 1),
             newButton.widthAnchor.constraint(equalTo: buttonView.widthAnchor, multiplier: 0.22),
         ])
@@ -541,9 +438,7 @@ extension DashBoardVC{
     }
 
 }
-extension DashBoardVC: UICollectionViewDelegate,
-    
-    UICollectionViewDataSource , UICollectionViewDelegateFlowLayout{
+extension DashBoardVC: UICollectionViewDelegate,UICollectionViewDataSource , UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return user.listing.count
     }
@@ -554,69 +449,71 @@ extension DashBoardVC: UICollectionViewDelegate,
         cell?.titleLabel.text = user.listing[indexPath.item]
         return cell ?? UICollectionViewCell()
     }
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let size = view.safeAreaLayoutGuide.layoutFrame.width/3.5
-            return CGSize(width:size , height: size/2)
-        }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = view.safeAreaLayoutGuide.layoutFrame.width/3.5
+        return CGSize(width:size , height: size/2)
+    }
         
     
-        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            showOpeningOptions(indexPath: indexPath)
-        }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        showOpeningOptions(indexPath: indexPath)
+    }
         func showOpeningOptions(indexPath: IndexPath)
-        {
-            let alertController = UIAlertController(title: "Choose an action", message: "Do you want to open or Delete", preferredStyle: .alert)
-
-            let open = UIAlertAction(title: "Open", style: .default) { _ in
-                
-                let new = NewVC()
-                new.presenter = self.presenter //for the flow
-                new.presenter?.newVc = new
-//                new.presenter?.interactor = self.presenter?.interactor
-//                new.presenter?.interactor?.presenter = self.presenter
-                let title = self.user.listing[indexPath.row]
-                new.configNav(title: title)
-                self.present(new, animated: true, completion: nil)
-            }
-
-            let delete = UIAlertAction(title: "Delete", style: .destructive) { _ in
-                
-                self.user.listing.remove(at: indexPath.row)
-                
-                Task{
-                    do{
-                        let encodedData = try JSONEncoder().encode(self.user)
-                        UserDefaults.standard.set(encodedData,forKey: "LastUser")
-                        
-                    }catch{
-                        print("cant save LastUser from change View tappped")
-                    }
-                    self.collectionView.reloadData()
-                    self.docListingTV.reloadData()
-                }
-                
-            }
-
-            alertController.addAction(open)
-            alertController.addAction(delete)
-
-            present(alertController, animated: true, completion: nil)
+    {
+        let alertController = UIAlertController(title: "Choose an action", message: "Do you want to open or Delete", preferredStyle: .alert)
+        alertController.view.accessibilityIdentifier = "openAlert"
+        let open = UIAlertAction(title: "Open", style: .default) { _ in
+            
+            let new = NewVC()
+            new.presenter = self.presenter
+            new.presenter?.newVc = new
+            
+            
+            let title = self.user.listing[indexPath.row]
+            new.configNav(title: title)
+            self.present(new, animated: true, completion: nil)
         }
+        open.accessibilityIdentifier = "openButton"
+        
+        let delete = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            
+            self.user.listing.remove(at: indexPath.row)
+            
+            Task{
+                do{
+                    let encodedData = try JSONEncoder().encode(self.user)
+                    UserDefaults.standard.set(encodedData,forKey: "LastUser")
+                    
+                }catch{
+                    print("cant save LastUser from change View tappped")
+                }
+                self.DoclistingCV.reloadData()
+                self.docListingTV.reloadData()
+            }
+            
+        }
+        delete.accessibilityIdentifier = "deleButton"
+        
+        alertController.addAction(open)
+        alertController.addAction(delete)
+        
+        present(alertController, animated: true, completion: nil)
+    }
     
     
     @objc func changeViewTapped()
     {
         if(docListingTV.isHidden){
-            collectionView.reloadData()
+            DoclistingCV.reloadData()
             docListingTV.isHidden = false
-            collectionView.isHidden = true
+            DoclistingCV.isHidden = true
             
             user.doclist = .table
         }
         else{
             docListingTV.reloadData()
             docListingTV.isHidden = true
-            collectionView.isHidden = false
+            DoclistingCV.isHidden = false
             
             user.doclist = .collectioin
         }
@@ -625,26 +522,22 @@ extension DashBoardVC: UICollectionViewDelegate,
             do{
                 let encodedData = try JSONEncoder().encode(self.user)
                 UserDefaults.standard.set(encodedData,forKey: "LastUser")
-//                UserDefaults.standard.synchronize()
-                
+
             }catch{
                 print("cant save LastUser from change View tappped")
             }
         }
         
-        
     }
     
-    
 }
-//MARK: CUSTOM COLLECTIO VIEW CELL
+
 class MyCollectionViewCell: UICollectionViewCell {
     var titleLabel: UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        // Create a UILabel and add it to the cell's contentView
         titleLabel = UILabel(frame: contentView.bounds)
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: 16)
@@ -656,42 +549,6 @@ class MyCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-
-
-//extension DashBoardVC:{
-//    func saveAppState() {
-//        // Save the state of this view controller if needed
-//        // In this example, we'll save the text of the label
-//        do{
-//            let encodedData = try JSONEncoder().encode(user)
-//            UserDefaults.standard.set(encodedData,forKey: "key")
-////            print("create new account succesfully")
-////            presenter?.showLoadingPage(user: user)
-//        }catch{
-//            print("error occured while creting user")
-//        }
-////        UserDefaults.standard.set(user, forKey: "key")
-//    }
-//    
-//    func restoreAppState() {
-//        // Restore the state of this view controller if needed
-//        // In this example, we'll restore the text of the label
-//        if let user = UserDefaults.standard.data(forKey: "key"){
-//            do{
-//                let decodedInstance = try JSONDecoder().decode(User.self, from: user)
-////                self.user = decodedInstance
-//                setUserInstance(user: decodedInstance)
-//            }catch{
-//                print("can't decode")
-//            }
-//        }
-//    }
-//}
-//#Preview{
-//    DashBoardVC()
-//}
-//MARK: CALSS NEW VC
 
 #Preview{
     DashBoardVC()

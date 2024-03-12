@@ -21,12 +21,10 @@ protocol DashBoardDelegate{
     func ShowListing()
     func setUserInstance(user: User)
 }
-//protocol signUpviewDelegate{
-//    var presenter: presenterDelegate? {get set}
-//}
+
+
 protocol presenterDelegate{
     var view: viewDelegate? {get set}
-//    var signupview: signUpviewDelegate? {get set}
     var interactor: interactorDelegate? {get set}
     var router: routerDelegate? {get set}
     var DashBoard: DashBoardDelegate? {get set}

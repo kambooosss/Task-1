@@ -70,6 +70,15 @@ final class InteracterTests: XCTestCase {
         mockpresenter.setExpectation(expectation: expectation)
         sut?.verifyCredential(username: mockUser.username  , password: mockUser.password)
         wait(for: [expectation], timeout: 2)
+        //decoding error
+        mockUser.username = "Aaa"
+        mockUser.password = "Kambuuussslok1!"
+        expectation = XCTestExpectation(description: "show decoding alert")
+        
+        mockpresenter.setExpectation(expectation: expectation)
+        sut?.verifyCredential(username: mockUser.username  , password: mockUser.password)
+        wait(for: [expectation], timeout: 2)
+        
         
         
         
@@ -135,6 +144,7 @@ final class InteracterTests: XCTestCase {
         sut.creatUser(username: mockUserName, password: mockPassword, age: mockage, country: mockCountry, gender: nil)
         wait(for: [expectation], timeout: 2)
         
+        
     }
     func testAddDoclist(){
         mockUser.username = "mockUser"
@@ -170,9 +180,15 @@ final class InteracterTests: XCTestCase {
         sut.url = URL(string: "")
         sut.fetchData()
         let result = XCTWaiter.wait(for: [expectation], timeout: 5)
-        if result == .completed {
-            XCTFail("this expectation should fail but fullfilled")
-        }
+        XCTAssertFalse(result == .completed)
+        
+        //valid url but differnt data model
+        expectation = XCTestExpectation(description: "Should fail becouaes url is nil")
+        mockpresenter.setExpectation(expectation: expectation)
+        sut.url = URL(string: "https://images.unsplash.com/photo-1538951337826-6ee8c6ec6ef8?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=480&ixid=MnwxfDB8MXxyYW5kb218MHwxMTYzNjM3fHx8fHx8fDE3MTAxMzE4MDU&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=480")
+        sut.fetchData()
+        wait(for: [expectation], timeout: 10)
+        
         
         
     }

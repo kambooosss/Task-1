@@ -24,7 +24,6 @@ class CustomTextField: UITextField {
     {
         
         translatesAutoresizingMaskIntoConstraints = false
-//        isHidden = true
         textColor = .label
         font = .systemFont(ofSize: 20)
         layer.borderColor = UIColor.black.cgColor
@@ -39,6 +38,7 @@ class CustomTextField: UITextField {
         returnKeyType = .go
         leftViewMode = .always
         leftView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: self.frame.size.height))
+        
         
         
     }

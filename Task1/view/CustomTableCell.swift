@@ -1,18 +1,16 @@
-//
-//  CustomTableCell.swift
-//  Task1
-//
-//  Created by kamalesh-pt7513 on 05/03/24.
-//
+
+
+
+
+
+
 
 import Foundation
 import UIKit
 class customTable: UITableViewCell{
     
     static let identifier = "customTableCellIdenditfier"
-    
     let textlabel = forMatingLabel()
-    
     
     let moreButton: UIButton = {
         let button = UIButton()
@@ -26,7 +24,6 @@ class customTable: UITableViewCell{
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        userInteractionEnabledWhileDragging = true
         selectionStyle = .default
         contentView.bringSubviewToFront(moreButton)
         self.addSubview(textlabel)
@@ -44,10 +41,7 @@ class customTable: UITableViewCell{
         
         NSLayoutConstraint.activate([
             textlabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            textlabel.topAnchor.constraint(equalTo: self.topAnchor),
-//            textlabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             textlabel.heightAnchor.constraint(equalToConstant: 50),
-            
             textlabel.trailingAnchor.constraint(equalTo: moreButton.leadingAnchor),
             
             moreButton.leadingAnchor.constraint(equalTo: textlabel.trailingAnchor),
@@ -80,17 +74,6 @@ class customTable: UITableViewCell{
         ]
         
         let bold = UIAction(title: "Bold",image: UIImage(systemName: "bold")) { _ in
-            //                let attributedString = NSAttributedString(string: self.textlabel.attributedText?.string ?? "", attributes: [
-            //                    NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: self.textlabel.font.pointSize)
-            //                    ])
-            
-            
-            
-            
-            //                    formatText.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: self.textlabel.font.pointSize), range: NSRange(location: 0, length: self.textlabel.attributedText?.length ?? 0))
-            
-            
-            
             
             if let labeltext = self.textlabel.attributedText
             {
@@ -109,10 +92,6 @@ class customTable: UITableViewCell{
                         break
                     }
                     
-                    
-                    
-                    
-                    
                 }else
                 {
                     self.textlabel.boldFlag = false
@@ -125,53 +104,18 @@ class customTable: UITableViewCell{
                         break
                     }
                     
-                    
-                    
-                    
                 }
                 self.textlabel.attributedText = formatText
                 
             }
             
-            
-            
-            
         }
         
-        
-        
         let italic = UIAction(title: "Italic",image: UIImage(systemName: "italic") ) { _ in
-            //                let attributedString = NSAttributedString(string: self.textlabel.text ?? "", attributes: [
-            //                    NSAttributedString.Key.font: UIFont.italicSystemFont(ofSize: self.textlabel.font.pointSize)
-            //                    ])
-            //                self.textlabel.attributedText = attributedString
-            //                let italicAttribute: [NSAttributedString.Key: Any] = [
-            //                    .font: UIFont.italicSystemFont(ofSize: self.textlabel.font.pointSize)
-            //                ]
-            //                if let formatText = self.textlabel.attributedText as? NSMutableAttributedString {
             
-            //                    formatText.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: self.textlabel.font.pointSize), range: NSRange(location: 0, length: self.textlabel.attributedText?.length ?? 0))
-            
-            //                    formatText.addAttributes(italicAttribute, range: NSRange(location: 0, length: self.textlabel.attributedText?.length ?? 0))
-            //
-            //                    self.textlabel.attributedText = formatText
             if let labeltext = self.textlabel.attributedText
             {
-                //                    print(labeltext.description)
-                //                    var formatText = NSMutableAttributedString(attributedString: labeltext)
-                //                    if(!self.textlabel.italicFlag)
-                //                    {
-                //                        formatText.addAttributes(italicAttribute, range: NSRange(location: 0, length: labeltext.length))
-                //                        self.textlabel.italicFlag = !self.textlabel.italicFlag
-                //                        self.textlabel.boldFlag = false
-                //
-                //                    }else
-                //                    {
-                //                        formatText.removeAttribute(.font, range: NSRange(location: 0, length: labeltext.length))
-                //                        self.textlabel.italicFlag = !self.textlabel.italicFlag
-                //                        self.textlabel.boldFlag = false
-                //
-                //                    }
+            
                 print(labeltext)
                 let formatText = NSMutableAttributedString(attributedString: labeltext)
                 if(!self.textlabel.italicFlag)
@@ -189,10 +133,6 @@ class customTable: UITableViewCell{
                         break
                     }
                     
-                    
-                    
-                    
-                    
                 }else
                 {
                     self.textlabel.italicFlag = false
@@ -205,16 +145,9 @@ class customTable: UITableViewCell{
                         break
                     }
                     
-                    
-                    
-                    
                 }
                 self.textlabel.attributedText = formatText
             }
-            
-            
-            
-            
             
         }
         
@@ -240,13 +173,10 @@ class customTable: UITableViewCell{
                     self.textlabel.strikeFlag = !self.textlabel.strikeFlag
                 }
                 
-                
                 self.textlabel.attributedText = formatText
                 
             }
         }
-        
-        
         
         let underline = UIAction(title: "underline",image: UIImage(systemName: "underline")) { _ in
             if var labeltext = self.textlabel.attributedText
@@ -274,7 +204,6 @@ class customTable: UITableViewCell{
         moreButton.menu = UIMenu(children: [bold,italic,strike,underline])
     }
     
-    
     func getFormat(boldflag: Bool, italicflag: Bool) -> LabelState
     {
         if(boldflag && italicflag)
@@ -293,7 +222,6 @@ class customTable: UITableViewCell{
         {
             return .none
         }
-           
     }
     
     required init?(coder: NSCoder) {

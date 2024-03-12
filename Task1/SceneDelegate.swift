@@ -21,10 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let user = UserDefaults.standard.data(forKey: "LastUser"),let decodedInstance = try? JSONDecoder().decode(User.self, from: user) , decodedInstance.state == .logedIN
         {
             
-                print("from scene delegate the last user YES")
-                window?.rootViewController = UINavigationController(rootViewController: Router.startWithDash())
-            
-            
+            print("from scene delegate the last user YES")
+            window?.rootViewController = UINavigationController(rootViewController: Router.startWithDash())
             
         }
         else{

@@ -3,4 +3,198 @@
    uuid = "F35D5FA2-ABDA-44D3-BF44-D15842DDD704"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "769E0B7C-3E1A-4E2F-AE31-B6292843BE01"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Task1UITests/LoginVCtest/Task1UITests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "setUp()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "769E0B7C-3E1A-4E2F-AE31-B6292843BE01 - d083ede9c5f57cf2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Task1UITests.Task1UITests.setUp() -&gt; ()"
+                  moduleName = "Task1UITests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kamalesh-pt7513/Desktop/Task1/Task1UITests/LoginVCtest/Task1UITests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50"
+                  offsetFromSymbolStart = "144">
+               </Location>
+               <Location
+                  uuid = "769E0B7C-3E1A-4E2F-AE31-B6292843BE01 - d083ede9c5f57c93"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Task1UITests.Task1UITests.setUp() -&gt; ()"
+                  moduleName = "Task1UITests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kamalesh-pt7513/Desktop/Task1/Task1UITests/LoginVCtest/Task1UITests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "144">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "575ED0B7-B03F-41D4-8CBE-8A471198ACB3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Task1UITests/LoginVCtest/Task1UITests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "logout()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "575ED0B7-B03F-41D4-8CBE-8A471198ACB3 - 25b40074e3507d8e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Task1UITests.Task1UITests.logout() -&gt; ()"
+                  moduleName = "Task1UITests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kamalesh-pt7513/Desktop/Task1/Task1UITests/LoginVCtest/Task1UITests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "516">
+               </Location>
+               <Location
+                  uuid = "575ED0B7-B03F-41D4-8CBE-8A471198ACB3 - 25b40074e3507daf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Task1UITests.Task1UITests.logout() -&gt; ()"
+                  moduleName = "Task1UITests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kamalesh-pt7513/Desktop/Task1/Task1UITests/LoginVCtest/Task1UITests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "116">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F7F95D3F-F18D-4D62-9685-543F64876202"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Task1UITests/LoginVCtest/Task1UITests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "testLoginVC()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F7F95D3F-F18D-4D62-9685-543F64876202 - 5f2d5654a7142439"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Task1UITests.Task1UITests.testLoginVC() -&gt; ()"
+                  moduleName = "Task1UITests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kamalesh-pt7513/Desktop/Task1/Task1UITests/LoginVCtest/Task1UITests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "3636">
+               </Location>
+               <Location
+                  uuid = "F7F95D3F-F18D-4D62-9685-543F64876202 - 5f2d5654a71424fb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Task1UITests.Task1UITests.testLoginVC() -&gt; ()"
+                  moduleName = "Task1UITests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kamalesh-pt7513/Desktop/Task1/Task1UITests/LoginVCtest/Task1UITests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "1312">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D47EB893-55A4-4D80-823C-191402B96859"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Task1UITests/DashBoardUItest/DashBoardUItest.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "testDashBoard()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D47EB893-55A4-4D80-823C-191402B96859 - 57634d0c8450da8c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Task1UITests.DashBoardUITests.testDashBoard() -&gt; ()"
+                  moduleName = "Task1UITests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kamalesh-pt7513/Desktop/Task1/Task1UITests/DashBoardUItest/DashBoardUItest.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "1748">
+               </Location>
+               <Location
+                  uuid = "D47EB893-55A4-4D80-823C-191402B96859 - 57634d0c8450df37"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Task1UITests.DashBoardUITests.testDashBoard() -&gt; ()"
+                  moduleName = "Task1UITests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kamalesh-pt7513/Desktop/Task1/Task1UITests/DashBoardUItest/DashBoardUItest.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "82"
+                  endingLineNumber = "82"
+                  offsetFromSymbolStart = "3664">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

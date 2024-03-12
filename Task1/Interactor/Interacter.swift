@@ -1,9 +1,3 @@
-//
-//  Interacter.swift
-//  Task1
-//
-//  Created by kamalesh-pt7513 on 21/02/24.
-//
 
 import Foundation
 import UIKit
@@ -24,21 +18,20 @@ class Interacter: interactorDelegate {
                         print("logged In")
                         presenter?.showLoadingPage(user: decodedInstance)
                     }else{
-//                        print("wrong answer")
+
                         presenter?.showWarning(message: "Password is incorrect")
                     }
                 }catch{
-//                    print("can't decode")
+
                     presenter?.showWarning(message: "An error occured while decoding")
                 }
             }
             else{
-                print("Username doesnt exist")
                 presenter?.showWarning(message: "Username doesnt exist try to sign up")
             }
         }
         else{
-//            print("username cant be nil")
+
             presenter?.showWarning(message: "Username cant be nil")
         }
     }
@@ -55,14 +48,8 @@ class Interacter: interactorDelegate {
         }
         guard let password = password , validatePassword(password: password) else {
             presenter?.signupViewWarning(message: "password must contains atleast 6 letter, a speacial character, a capital letter")
-//            let alert = UIAlertController(title: "Aleart", message: "This is an alert.", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil)
-
-//            self.present(alert, animated: true, completion: nil)
             return
         }
-        
-        
         
         if let age = age, let country = country, let gender = gender {
             
@@ -88,7 +75,6 @@ class Interacter: interactorDelegate {
         let reference = NSPredicate(format: "SELF MATCHES %@ ", "^(?=.*[a-z])(?=.*[$@$#!%*?&])(?=.*[A-Z]).{6,}$")
         return reference.evaluate(with: password)
     }
-    
     
 }
 extension Interacter{

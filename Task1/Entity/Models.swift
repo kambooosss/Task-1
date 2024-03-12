@@ -17,7 +17,6 @@ class User : Codable{
     var password: String?
     var state: State?
     var doclist: DocList = .table
-//    var data: Data?
     var listing: [String] = []
     
     init(){
